@@ -47,3 +47,4 @@ computed into a lookup table, and that table made available in projects.
 * Smart switching could be implemented, based on whether speed or accuracy is
 desired, or if the distance is determined to be long, and thus a more accurate
 model would be desired.
+* Auto-download data from US Census website (i.e. with requests package).
