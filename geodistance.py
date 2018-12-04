@@ -3,22 +3,8 @@ Functions for computing the geographical distance between two pairs of
 latitude, longitude points.
 """
 import math
-from decimal import Decimal
 
-
-class LatLongCoordinate:
-    radians_conversion_factor = Decimal(math.pi / 180)
-
-    def __init__(self, lat, long):
-        self.latitude = Decimal(lat)
-        self.longitude = Decimal(long)
-
-    def convert_to_radians(self):
-        """
-        Convert the current coordinates from lat/long to rad.
-        """
-        return (self.latitude * self.radians_conversion_factor,
-                self.longitude * self.radians_conversion_factor)
+from coordinates import LatLongCoordinate
 
 
 class GeoDistance:
@@ -30,7 +16,7 @@ class GeoDistance:
         for i, attr_name in enumerate(['coord_1', 'coord_2']):
             if hasattr(args[i], 'latitude') and hasattr(args[i], 'longitude'):
                 setattr(self, attr_name, args[i])
-            elif hasattr(args[i], '__getitem__') and len(args[i] > 1):
+            elif hasattr(args[i], '__getitem__') and len(args[i]) > 1:
                 setattr(self, attr_name, LatLongCoordinate(args[i][0], args[i][1]))
             else:
                 raise ValueError(f'Invalid type for {self.__class__.__name__}: {args}')
@@ -66,9 +52,10 @@ class GeoDistance:
         z_diff = z1 - z2
         return math.sqrt(math.pow(x_diff, 2) + math.pow(y_diff, 2) + math.pow(z_diff, 2))
 
-    def keerthana(self, units='metric'):
+    def oblate_spheroid(self, units='metric'):
         """
-        Use Keerthana's algorithm for computing geo distance on this pair.
+        Use oblate shperoid approximation of earth's shape for computing geo
+        distance on this pair.
         :return: float distance in specified units, default is km.
         """
         # Do all calculations using km. Convert at the end if necessary.
