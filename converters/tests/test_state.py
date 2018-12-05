@@ -13,8 +13,8 @@ class TestCensusDataDownloader(TestCase):
     def test_download_no_file_present(self):
         self.d = CensusDataDownloader()
         self.d.download()
-        self.assertTrue(d.saved_file)
-        self.assertTrue(os.path.isfile(d.saved_file))
+        self.assertTrue(self.d.saved_file)
+        self.assertTrue(os.path.isfile(self.d.saved_file))
 
     def test_download_file_present(self):
         pass
@@ -35,15 +35,15 @@ class TestStateSearch(TestCase):
         state = 'UT'
         expected = coordinates.LatLongCoordinate(41.5, 52.1)
         actual = self.ss.search(state)
-        self.assertAlmostEqual(expected.latitude, actual.latitude)
-        self.assertAlmostEqual(expected.longitude, actual.longitude)
+        self.assertAlmostEqual(expected.latitude, actual.latitude, places=3)
+        self.assertAlmostEqual(expected.longitude, actual.longitude, places=3)
 
     def test_full_state_name(self):
         state = 'New York'
         expected = coordinates.LatLongCoordinate(41.5, 52.1)
         actual = self.ss.search(state)
-        self.assertAlmostEqual(expected.latitude, actual.latitude)
-        self.assertAlmostEqual(expected.longitude, actual.longitude)
+        self.assertAlmostEqual(expected.latitude, actual.latitude, places=3)
+        self.assertAlmostEqual(expected.longitude, actual.longitude, places=3)
 
     def test_bulk_search(self):
         states = ['North Dakota', 'Washington', 'Maryland', 'Florida', 'Iowa']
@@ -55,8 +55,8 @@ class TestStateSearch(TestCase):
         self.assertEqual(len(expected), len(actual))
         for i in range(len(expected)):
             with self.subTest(i=i):
-                self.assertAlmostEqual(expected[i].latitude, actual[i].latitude)
-                self.assertAlmostEqual(expected[i].longitude, actual[i].longitude)
+                self.assertAlmostEqual(expected[i].latitude, actual[i].latitude, places=3)
+                self.assertAlmostEqual(expected[i].longitude, actual[i].longitude, places=3)
 
     def test_incorrect_state_close_enough(self):
         states = ['New Yuck', 'North Lakota', 'Utep', 'Tejas', 'Wsahingtion']
@@ -68,8 +68,8 @@ class TestStateSearch(TestCase):
         self.assertEqual(len(expected), len(actual))
         for i in range(len(expected)):
             with self.subTest(i=i):
-                self.assertAlmostEqual(expected[i].latitude, actual[i].latitude)
-                self.assertAlmostEqual(expected[i].longitude, actual[i].longitude)
+                self.assertAlmostEqual(expected[i].latitude, actual[i].latitude, places=3)
+                self.assertAlmostEqual(expected[i].longitude, actual[i].longitude, places=3)
 
     def test_incorrect_state_cannot_resolve(self):
         states = ['Paris', 'Dominican Republic', 'NZ', 'Norcal', 'SOCAL']
@@ -81,5 +81,5 @@ class TestStateSearch(TestCase):
         self.assertEqual(len(expected), len(actual))
         for i in range(len(expected)):
             with self.subTest(i=i):
-                self.assertAlmostEqual(expected[i].latitude, actual[i].latitude)
-                self.assertAlmostEqual(expected[i].longitude, actual[i].longitude)
+                self.assertAlmostEqual(expected[i].latitude, actual[i].latitude, places=3)
+                self.assertAlmostEqual(expected[i].longitude, actual[i].longitude, places=3)

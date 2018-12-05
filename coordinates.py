@@ -15,3 +15,9 @@ class LatLongCoordinate:
         """
         return (self.latitude * self.radians_conversion_factor,
                 self.longitude * self.radians_conversion_factor)
+
+    def __repr__(self):
+        return 'LatLongCoordinate' + self.__str__()
+
+    def __str__(self):
+        return f'({self.latitude}, {self.longitude})'

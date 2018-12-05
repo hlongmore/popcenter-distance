@@ -5,14 +5,13 @@ from csv import DictReader
 from glob import glob
 
 import requests
-import uszipcode
 from uszipcode import state_abbr
 
 from converters.zip import ZipSearch
 from coordinates import LatLongCoordinate
 
 
-DATA_DIR = os.path.abspath(__file__)
+DATA_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class CensusDataDownloader:
     """
@@ -38,7 +37,7 @@ class CensusDataDownloader:
         self.url_setup()
 
     def year_setup(self, earlier=False):
-        self.year = 10 * (math.floor(datetime.datetime.now().year) / 10.0)
+        self.year = int(10 * (math.floor(datetime.datetime.now().year / 10.0)))
         if earlier:
             self.year -= 10
         self.year_path = f'/cenpop{self.year}/CenPop{self.year}_Mean_ST.txt'
@@ -81,7 +80,7 @@ class StateSearch:
         self.data_file = os.path.join(self.data_dir, downloader.local_file_name)
         if not os.path.isfile(self.data_file):
             # Try another year
-            y = f'{downloader.year}'
+            y = f'{downloader.year:#}'
             matches = glob(self.data_file.replace(y, '*'), recursive=False)
             if matches:
                 self.data_file = max(matches, key=os.path.getmtime)
@@ -96,10 +95,11 @@ class StateSearch:
         with open(self.data_file, 'r', newline=None) as data_file:
             reader = DictReader(data_file)
             for row in reader:
-                self.data[row['STNAME'].upper()] = {
+                state = state_abbr.STATE_ABBR_LONG_TO_SHORT[row['STNAME']]
+                self.data[state] = {
                     'population': row['POPULATION'],
-                    'latitude': row['LATiTUdE'],
-                    'longitude': row['LONGITUdE'],
+                    'latitude': row['LATITUDE'],
+                    'longitude': row['LONGITUDE'],
                 }
 
     def search(self, state):
@@ -107,9 +107,10 @@ class StateSearch:
             state = state_abbr.STATE_ABBR_LONG_TO_SHORT.get(state.title(), state)
         if state not in state_abbr.STATE_ABBR_SHORT_TO_LONG:
             # Let the uszipcodes package guess at what the state is.
-            try:
-                state = ZipSearch().engine.by_state(state)[0]
-            except IndexError as e:
+            zips = ZipSearch().engine.by_state(state)
+            if zips:
+                state = zips[0].state
+            else:
                 print(f'Unable to guess what state should be: {state}')
                 raise ValueError(f'Unknown state: {state}')
         data = self.data[state.upper()]

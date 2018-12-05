@@ -1,9 +1,9 @@
-from itertools import combinations
+from collections import Counter
 
 from uszipcode import SearchEngine
 
 from coordinates import LatLongCoordinate
-
+from .city_state import CityStateSearch
 
 class ZipSearch:
 
@@ -12,16 +12,19 @@ class ZipSearch:
 
     def search(self, zipcode):
         data = self.engine.by_zipcode(zipcode)
-        if not data.lat or not data.lng:
-            # ZipCode is missing data. Try to figure it out from the major_city.
-            near_zips = self.engine.by_city_and_state(data.major_city, data.state)
-            n = len(near_zips)
-            data.lat = sum(z.lat for z in near_zips)/n
-            data.lng = sum(z.lng for z in near_zips)/n
-        return LatLongCoordinate(data.lat, data.lng)
+        if data.lat and data.lng:
+            return LatLongCoordinate(data.lat, data.lng)
+        else:
+            return CityStateSearch(engine=self.engine).search(
+                data.major_city, data.state)
 
     def search_bulk(self, zipcodes):
         latlong_coordinates = []
         for zc in zipcodes:
             latlong_coordinates.append(self.search(zc))
         return latlong_coordinates
+
+    def get_county(self, coordinates: LatLongCoordinate):
+        zipcodes = self.engine.by_coordinates(coordinates.latitude, coordinates.longitude)
+        c = Counter([z.county for z in zipcodes])
+        return c.most_common()[0][0]
