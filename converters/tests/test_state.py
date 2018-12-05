@@ -33,14 +33,14 @@ class TestStateSearch(TestCase):
 
     def test_search_two_letter_state(self):
         state = 'UT'
-        expected = coordinates.LatLongCoordinate(41.5, 52.1)
+        expected = coordinates.LatLongCoordinate(40.401, -111.927)
         actual = self.ss.search(state)
         self.assertAlmostEqual(expected.latitude, actual.latitude, places=3)
         self.assertAlmostEqual(expected.longitude, actual.longitude, places=3)
 
     def test_full_state_name(self):
         state = 'New York'
-        expected = coordinates.LatLongCoordinate(41.5, 52.1)
+        expected = coordinates.LatLongCoordinate(41.501, -74.621)
         actual = self.ss.search(state)
         self.assertAlmostEqual(expected.latitude, actual.latitude, places=3)
         self.assertAlmostEqual(expected.longitude, actual.longitude, places=3)
@@ -48,7 +48,11 @@ class TestStateSearch(TestCase):
     def test_bulk_search(self):
         states = ['North Dakota', 'Washington', 'Maryland', 'Florida', 'Iowa']
         points = [
-            (1.1, 1.2), (2.1, 2.2), (43.1, 123.3), (45.23, 54.2), (123.4, 34.0),
+            (47.348, -99.310),
+            (47.331, -121.620),
+            (39.141, -76.798),
+            (27.823, -81.635),
+            (41.946, -93.037),
         ]
         expected = [coordinates.LatLongCoordinate(a, b) for a, b in points]
         actual = self.ss.search_bulk(states)
@@ -59,9 +63,9 @@ class TestStateSearch(TestCase):
                 self.assertAlmostEqual(expected[i].longitude, actual[i].longitude, places=3)
 
     def test_incorrect_state_close_enough(self):
-        states = ['New Yuck', 'North Lakota', 'Utep', 'Tejas', 'Wsahingtion']
+        states = ['New Yuck', 'North Lakota', 'Tejas', 'Wsahingtion']
         points = [
-            (1.1, 1.2), (2.1, 2.2), (43.1, 123.3), (45.23, 54.2), (123.4, 34.0),
+            (43.155, -71.462), (47.348, -99.310), (30.905, -97.366), (47.331, -121.620),
         ]
         expected = [coordinates.LatLongCoordinate(a, b) for a, b in points]
         actual = self.ss.search_bulk(states)
@@ -73,13 +77,7 @@ class TestStateSearch(TestCase):
 
     def test_incorrect_state_cannot_resolve(self):
         states = ['Paris', 'Dominican Republic', 'NZ', 'Norcal', 'SOCAL']
-        points = [
-            (1.1, 1.2), (2.1, 2.2), (43.1, 123.3), (45.23, 54.2), (123.4, 34.0),
-        ]
-        expected = [coordinates.LatLongCoordinate(a, b) for a, b in points]
-        actual = self.ss.search_bulk(states)
-        self.assertEqual(len(expected), len(actual))
-        for i in range(len(expected)):
-            with self.subTest(i=i):
-                self.assertAlmostEqual(expected[i].latitude, actual[i].latitude, places=3)
-                self.assertAlmostEqual(expected[i].longitude, actual[i].longitude, places=3)
+        for s in states:
+            with self.subTest(i=s):
+                with self.assertRaises(ValueError):
+                    self.ss.search(s)
