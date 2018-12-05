@@ -48,3 +48,10 @@ computed into a lookup table, and that table made available in projects.
 desired, or if the distance is determined to be long, and thus a more accurate
 model would be desired.
 * Auto-download data from US Census website (i.e. with requests package).
+
+
+-----
+Code Coverage
+-----
+As of 2018-12-05, code coverage for popcenter directory is:
+100% files, 92% lines covered.

@@ -4,7 +4,7 @@ latitude, longitude points.
 """
 import math
 
-from coordinates import LatLongCoordinate
+from popcenter.coordinates import LatLongCoordinate
 
 
 class GeoDistance:

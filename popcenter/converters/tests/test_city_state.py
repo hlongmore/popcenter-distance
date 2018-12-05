@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-import coordinates
-from converters.city_state import CityStateSearch
+from popcenter import coordinates
+from popcenter.converters import CityStateSearch
 
 
 class TestCityStateSearch(TestCase):

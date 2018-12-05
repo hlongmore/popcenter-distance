@@ -1,8 +1,8 @@
 import os
 from unittest import TestCase
 
-import coordinates
-from converters.state import StateSearch, CensusDataDownloader
+from popcenter import coordinates
+from popcenter.converters.state import StateSearch, CensusDataDownloader
 
 
 class TestCensusDataDownloader(TestCase):

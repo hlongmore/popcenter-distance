@@ -2,7 +2,7 @@ from collections import Counter
 
 from uszipcode import SearchEngine
 
-from coordinates import LatLongCoordinate
+from popcenter.coordinates import LatLongCoordinate
 
 
 class CityStateSearch:

@@ -1,7 +1,6 @@
 from unittest import TestCase
 
-import coordinates
-import geodistance
+from popcenter import geodistance, coordinates
 
 
 class TestGeoDistance(TestCase):

@@ -7,8 +7,8 @@ from glob import glob
 import requests
 from uszipcode import state_abbr
 
-from converters.zip import ZipSearch
-from coordinates import LatLongCoordinate
+from popcenter.converters.zip import ZipSearch
+from popcenter.coordinates import LatLongCoordinate
 
 
 DATA_DIR = os.path.abspath(os.path.dirname(__file__))

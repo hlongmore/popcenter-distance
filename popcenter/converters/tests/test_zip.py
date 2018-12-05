@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-import coordinates
-from converters.zip import ZipSearch
+from popcenter import coordinates
+from popcenter.converters.zip import ZipSearch
 
 
 class TestZipSearch(TestCase):
