@@ -53,5 +53,5 @@ model would be desired.
 -----
 Code Coverage
 -----
-As of 2018-12-05, code coverage for popcenter directory is:
-100% files, 92% lines covered.
+As of 2024-12-03, code coverage for popcenter directory is:
+100% files, 90% lines covered.
