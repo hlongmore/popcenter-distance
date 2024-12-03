@@ -1,14 +1,13 @@
 from collections import Counter
 
-from uszipcode import SearchEngine
-
 from popcenter.coordinates import LatLongCoordinate
+from popcenter.search_engine_wrapper import get_search_engine
 from .city_state import CityStateSearch
 
 class ZipSearch:
 
     def __init__(self, simple=True):
-        self.engine = SearchEngine(simple_zipcode=simple)
+        self.engine = get_search_engine(simple)
 
     def search(self, zipcode):
         data = self.engine.by_zipcode(zipcode)

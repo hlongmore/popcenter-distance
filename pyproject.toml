@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "popcenter-distance"
+version = "0.1.0"
+description = "Tools for computing the geographic distance between population centers in the USA."
+authors = ["Henry Longmore <henry@longmore.org>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+packages = [{include = "popcenter"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+httpx = "^0.28.0"
+uszipcode = "^1.0.1"
+sqlalchemy-mate = "2.0.0.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

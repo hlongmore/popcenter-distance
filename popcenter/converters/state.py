@@ -95,7 +95,7 @@ class StateSearch:
         with open(self.data_file, 'r', newline=None) as data_file:
             reader = DictReader(data_file)
             for row in reader:
-                state = state_abbr.STATE_ABBR_LONG_TO_SHORT[row['STNAME']]
+                state = state_abbr.MAPPER_STATE_ABBR_LONG_TO_SHORT[row['STNAME']]
                 self.data[state] = {
                     'population': row['POPULATION'],
                     'latitude': row['LATITUDE'],
@@ -104,8 +104,8 @@ class StateSearch:
 
     def search(self, state):
         if len(state) > 2:
-            state = state_abbr.STATE_ABBR_LONG_TO_SHORT.get(state.title(), state)
-        if state not in state_abbr.STATE_ABBR_SHORT_TO_LONG:
+            state = state_abbr.MAPPER_STATE_ABBR_LONG_TO_SHORT.get(state.title(), state)
+        if state not in state_abbr.MAPPER_STATE_ABBR_SHORT_TO_LONG:
             # Let the uszipcodes package guess at what the state is.
             zips = ZipSearch().engine.by_state(state)
             if zips:

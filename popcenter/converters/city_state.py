@@ -1,14 +1,13 @@
 from collections import Counter
 
-from uszipcode import SearchEngine
-
 from popcenter.coordinates import LatLongCoordinate
+from popcenter.search_engine_wrapper import get_search_engine
 
 
 class CityStateSearch:
 
     def __init__(self, simple=True, engine=None):
-        self.engine = engine or SearchEngine(simple_zipcode=simple)
+        self.engine = engine or get_search_engine(simple)
 
     def search(self, city, state):
         if not city or not state:

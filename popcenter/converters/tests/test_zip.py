@@ -4,19 +4,21 @@ from popcenter import coordinates
 from popcenter.converters.zip import ZipSearch
 
 
+# NOTA BENE: the coordinates in these tests may need updating every so often
+#  when the database gets updated.
+
+
 class TestZipSearch(TestCase):
     zs = ZipSearch(simple=False)
 
     def test_relatively_new_zip_code(self):
-        # NOTA BENE: this test may need updating every so often when the
-        # database gets updated.
-        expected = coordinates.LatLongCoordinate(40.762, -111.892)
+        expected = coordinates.LatLongCoordinate(40.6599, -111.930)
         actual = self.zs.search('84129')
         self.assertAlmostEqual(expected.latitude, actual.latitude, places=3)
         self.assertAlmostEqual(expected.longitude, actual.longitude, places=3)
 
     def test_established_zip_code(self):
-        expected = coordinates.LatLongCoordinate(40.7599, -111.900)
+        expected = coordinates.LatLongCoordinate(40.7500, -111.900)
         actual = self.zs.search('84101')
         self.assertAlmostEqual(expected.latitude, actual.latitude, places=3)
         self.assertAlmostEqual(expected.longitude, actual.longitude, places=3)
@@ -24,11 +26,11 @@ class TestZipSearch(TestCase):
     def test_bulk_search(self):
         codes = [84129, 84118, 90210, 45302, 21030]
         points = [
-            (40.762, -111.892),
-            (40.650, -112.040),
-            (34.100, -118.420),
-            (40.400, -84.200),
-            (39.490, -76.660),
+            (40.6599, -111.9300),
+            (40.650, -112.010),
+            (34.090, -118.4099),
+            (40.390, -84.1700),
+            (39.4699, -76.6299),
         ]
         expected = [coordinates.LatLongCoordinate(a, b) for a, b in points]
         actual = self.zs.search_bulk(codes)

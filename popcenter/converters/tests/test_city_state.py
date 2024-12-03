@@ -4,6 +4,10 @@ from popcenter import coordinates
 from popcenter.converters import CityStateSearch
 
 
+# NOTA BENE: the coordinates in these tests may need updating every so often
+#  when the database gets updated.
+
+
 class TestCityStateSearch(TestCase):
     cs = CityStateSearch(simple=False)
 
@@ -14,7 +18,7 @@ class TestCityStateSearch(TestCase):
             self.cs.search('Kearns', 'UT')
 
     def test_salt_lake(self):
-        expected = coordinates.LatLongCoordinate(40.762, -111.892)
+        expected = coordinates.LatLongCoordinate(40.75199, -111.8819)
         actual = self.cs.search('Salt Lake City', 'UT')
         self.assertAlmostEqual(expected.latitude, actual.latitude, places=3)
         self.assertAlmostEqual(expected.longitude, actual.longitude, places=3)
@@ -28,11 +32,11 @@ class TestCityStateSearch(TestCase):
             ('Hunt Valley', 'MD'),
         ]
         points = [
-            (40.762, -111.892),
-            (34.075, -118.400),
-            (46.864, -92.058),
-            (39.777, -84.185),
-            (39.488, -76.657),
+            (40.7519, -111.8819),
+            (34.070, -118.3966),
+            (46.8599, -92.0540),
+            (39.7699, -84.1799),
+            (39.4900, -76.6500),
         ]
         expected = [coordinates.LatLongCoordinate(a, b) for a, b in points]
         actual = self.cs.search_bulk(cities)

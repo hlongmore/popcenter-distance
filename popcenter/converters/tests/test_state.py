@@ -5,6 +5,10 @@ from popcenter import coordinates
 from popcenter.converters.state import StateSearch, CensusDataDownloader
 
 
+# NOTA BENE: the coordinates in these tests may need updating every so often
+#  when the database gets updated.
+
+
 class TestCensusDataDownloader(TestCase):
 
     def setUp(self):
@@ -33,14 +37,14 @@ class TestStateSearch(TestCase):
 
     def test_search_two_letter_state(self):
         state = 'UT'
-        expected = coordinates.LatLongCoordinate(40.401, -111.927)
+        expected = coordinates.LatLongCoordinate(40.3858, -111.9480)
         actual = self.ss.search(state)
         self.assertAlmostEqual(expected.latitude, actual.latitude, places=3)
         self.assertAlmostEqual(expected.longitude, actual.longitude, places=3)
 
     def test_full_state_name(self):
         state = 'New York'
-        expected = coordinates.LatLongCoordinate(41.501, -74.621)
+        expected = coordinates.LatLongCoordinate(41.4717, -74.5908)
         actual = self.ss.search(state)
         self.assertAlmostEqual(expected.latitude, actual.latitude, places=3)
         self.assertAlmostEqual(expected.longitude, actual.longitude, places=3)
@@ -48,11 +52,11 @@ class TestStateSearch(TestCase):
     def test_bulk_search(self):
         states = ['North Dakota', 'Washington', 'Maryland', 'Florida', 'Iowa']
         points = [
-            (47.348, -99.310),
-            (47.331, -121.620),
-            (39.141, -76.798),
-            (27.823, -81.635),
-            (41.946, -93.037),
+            (47.3395, -99.4449),
+            (47.3295, -121.6326),
+            (39.1366, -76.8022),
+            (27.8392, -81.6360),
+            (41.9366, -93.037),
         ]
         expected = [coordinates.LatLongCoordinate(a, b) for a, b in points]
         actual = self.ss.search_bulk(states)
@@ -65,7 +69,10 @@ class TestStateSearch(TestCase):
     def test_incorrect_state_close_enough(self):
         states = ['New Yuck', 'North Lakota', 'Tejas', 'Wsahingtion']
         points = [
-            (43.155, -71.462), (47.348, -99.310), (30.905, -97.366), (47.331, -121.620),
+            (43.1491, -71.4556),
+            (47.3395, -99.4449),
+            (30.9095, -97.3286),
+            (47.3295, -121.6326),
         ]
         expected = [coordinates.LatLongCoordinate(a, b) for a, b in points]
         actual = self.ss.search_bulk(states)
